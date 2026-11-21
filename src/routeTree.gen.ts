@@ -10,33 +10,83 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
+import { Route as DashboardConsultationsRouteImport } from './routes/_dashboard.consultations'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
+import { Route as DashboardJournalRouteImport } from './routes/_dashboard.journal'
+import { Route as DashboardSimulateurRouteImport } from './routes/_dashboard.simulateur'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardConsultationsRoute = DashboardConsultationsRouteImport.update({
+  id: '/consultations',
+  path: '/consultations',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardJournalRoute = DashboardJournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSimulateurRoute = DashboardSimulateurRouteImport.update({
+  id: '/simulateur',
+  path: '/simulateur',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/consultations': typeof DashboardConsultationsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/journal': typeof DashboardJournalRoute
+  '/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/consultations': typeof DashboardConsultationsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/journal': typeof DashboardJournalRoute
+  '/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/consultations': typeof DashboardConsultationsRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/journal': typeof DashboardJournalRoute
+  '/_dashboard/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/consultations' | '/dashboard' | '/journal' | '/simulateur'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/consultations' | '/dashboard' | '/journal' | '/simulateur'
+  id:
+    | '__root__'
+    | '/'
+    | '/_dashboard'
+    | '/_dashboard/consultations'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/journal'
+    | '/_dashboard/simulateur'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +98,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/consultations': {
+      id: '/_dashboard/consultations'
+      path: '/consultations'
+      fullPath: '/consultations'
+      preLoaderRoute: typeof DashboardConsultationsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/journal': {
+      id: '/_dashboard/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof DashboardJournalRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/simulateur': {
+      id: '/_dashboard/simulateur'
+      path: '/simulateur'
+      fullPath: '/simulateur'
+      preLoaderRoute: typeof DashboardSimulateurRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardConsultationsRoute: typeof DashboardConsultationsRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardJournalRoute: typeof DashboardJournalRoute
+  DashboardSimulateurRoute: typeof DashboardSimulateurRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardConsultationsRoute: DashboardConsultationsRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardJournalRoute: DashboardJournalRoute,
+  DashboardSimulateurRoute: DashboardSimulateurRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Demo state (consultations, instructions, events, audit) lives in `src/lib/care-store.tsx` React context mounted in the `_dashboard` layout; no backend, so state resets on reload — swap the provider for real queries when a backend is added.
+- Patient replies are decided by the deterministic `src/lib/safety-engine.ts`: red flags first, then only active approved instructions of the authorised consultation; keep its tests in `safety-engine.test.ts` green when changing rules.
