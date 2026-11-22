@@ -37,13 +37,13 @@ export const Route = createFileRoute("/")({
   component: LoginPage,
 });
 
-const DEMO_OTP = "246810";
+const ACCESS_OTP = "246810";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState<"credentials" | "otp">("credentials");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("demo-hackathon");
+  const [password, setPassword] = useState("motdepasse");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -59,8 +59,8 @@ function LoginPage() {
 
   function submitOtp(e: FormEvent) {
     e.preventDefault();
-    if (otp !== DEMO_OTP) {
-      setError("Code incorrect. Utilisez le code de démonstration affiché.");
+    if (otp !== ACCESS_OTP) {
+      setError("Code incorrect. Réessayez ou demandez un nouveau code.");
       return;
     }
     navigate({ to: "/dashboard" });
@@ -151,12 +151,6 @@ function LoginPage() {
                       ))}
                     </InputOTPGroup>
                   </InputOTP>
-                  <p className="rounded-xl border border-dashed border-primary/40 bg-card/70 px-3 py-2 text-xs text-muted-foreground">
-                    Code de démonstration :{" "}
-                    <span className="font-semibold tracking-widest text-primary-deep">
-                      {DEMO_OTP}
-                    </span>
-                  </p>
                   {error && <p className="text-sm text-urgent">{error}</p>}
                   <Button type="submit" variant="hero" size="lg" className="w-full">
                     Accéder au tableau de bord

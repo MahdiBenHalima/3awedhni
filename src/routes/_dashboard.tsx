@@ -42,7 +42,7 @@ function TopBar() {
       <div className="relative hidden max-w-sm flex-1 md:block">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Rechercher un patient (ex. DEMO-001)"
+          placeholder="Rechercher un patient (ex. PT-4821)"
           className="h-10 rounded-full bg-card pl-9"
         />
       </div>

@@ -13,7 +13,7 @@ import {
   initialEvents,
   instructions as seedInstructions,
   DOCTOR,
-} from "./demo-data";
+} from "./seed-data";
 import { FOLLOW_UP_LABELS } from "./events";
 
 interface CareStore {

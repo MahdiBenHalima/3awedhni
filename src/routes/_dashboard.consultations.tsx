@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useCareStore } from "@/lib/care-store";
 import type { ConsultationStatus } from "@/lib/care-types";
-import { alertSigns, DEMO_CONSULTATION_ID, demoTranscript } from "@/lib/demo-data";
+import { alertSigns, PRIMARY_CONSULTATION_ID, seedTranscript } from "@/lib/seed-data";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_dashboard/consultations")({
@@ -69,8 +69,10 @@ function ConsultationsPage() {
   const [stage, setStage] = useState<Stage>("audio");
   const [playing, setPlaying] = useState(false);
   const [code, setCode] = useState<string | null>(null);
-  const demo = consultations.find((c) => c.id === DEMO_CONSULTATION_ID)!;
-  const demoInstructions = instructions.filter((i) => i.consultationId === DEMO_CONSULTATION_ID);
+  const consultation = consultations.find((c) => c.id === PRIMARY_CONSULTATION_ID)!;
+  const consultationInstructions = instructions.filter(
+    (i) => i.consultationId === PRIMARY_CONSULTATION_ID,
+  );
   const stepIndex = STEPS.findIndex((s) => s.key === stage);
 
   useEffect(() => {
@@ -94,7 +96,7 @@ function ConsultationsPage() {
           {consultations.map((c) => (
             <div
               key={c.id}
-              className={`rounded-2xl border bg-card p-4 shadow-soft ${c.id === DEMO_CONSULTATION_ID ? "ring-2 ring-primary/40" : ""}`}
+              className={`rounded-2xl border bg-card p-4 shadow-soft ${c.id === PRIMARY_CONSULTATION_ID ? "ring-2 ring-primary/40" : ""}`}
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold text-ink">{c.patientCode}</span>
@@ -152,11 +154,11 @@ function ConsultationsPage() {
             </div>
             <div className="flex-1">
               <h2 className="text-xl font-semibold">
-                {demo.patientLabel} · {demo.age}
+                {consultation.patientLabel} · {consultation.age}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Identifiant interne aléatoire · {demo.diagnosis} ·{" "}
-                {formatDateTime(demo.consultedAt)}
+                Identifiant interne aléatoire · {consultation.diagnosis} ·{" "}
+                {formatDateTime(consultation.consultedAt)}
               </p>
             </div>
             {stage !== "audio" && (
@@ -168,7 +170,7 @@ function ConsultationsPage() {
                   setCode(null);
                 }}
               >
-                Rejouer la démo
+                Recommencer
               </Button>
             )}
           </div>
@@ -204,8 +206,8 @@ function ConsultationsPage() {
                 <Button
                   variant="soft"
                   onClick={() =>
-                    toast("Enregistrement simulé", {
-                      description: "Audio préparé à l'avance pour la démo.",
+                    toast("Enregistrement non disponible", {
+                      description: "Le micro n'est pas encore connecté à votre espace.",
                     })
                   }
                 >
@@ -242,7 +244,7 @@ function ConsultationsPage() {
                   <h3 className="text-lg font-semibold">Transcription</h3>
                 </div>
                 <p className="mt-3 whitespace-pre-line rounded-2xl bg-muted p-4 text-sm leading-relaxed">
-                  {demoTranscript}
+                  {seedTranscript}
                 </p>
                 <p className="mt-2 text-xs text-warning">
                   Vérifiez particulièrement âges, températures, doses, négations et unités.
@@ -255,7 +257,7 @@ function ConsultationsPage() {
                   Modifiez l'action autorisée si nécessaire avant de valider.
                 </p>
                 <div className="mt-5 space-y-4">
-                  {demoInstructions.map((ins, i) => (
+                  {consultationInstructions.map((ins, i) => (
                     <div key={ins.id} className="rounded-2xl border p-4">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <h4 className="font-semibold">
@@ -311,11 +313,11 @@ function ConsultationsPage() {
                     size="lg"
                     className="mt-6"
                     onClick={() => {
-                      const c = approveConsultation(DEMO_CONSULTATION_ID);
+                      const c = approveConsultation(PRIMARY_CONSULTATION_ID);
                       setCode(c);
                       setStage("validated");
                       toast.success("Fiche validée", {
-                        description: "Les consignes sont actives pour DEMO-001.",
+                        description: "Les consignes sont actives pour PT-4821.",
                       });
                     }}
                   >
@@ -331,14 +333,14 @@ function ConsultationsPage() {
                       </p>
                     </div>
                     <span className="rounded-xl bg-card px-4 py-2 font-mono text-lg font-bold tracking-widest text-primary-deep shadow-soft">
-                      {code ?? demo.secureCode}
+                      {code ?? consultation.secureCode}
                     </span>
                     <Button
                       variant="soft"
                       size="icon"
                       aria-label="Copier le code"
                       onClick={() => {
-                        void navigator.clipboard?.writeText(code ?? demo.secureCode ?? "");
+                        void navigator.clipboard?.writeText(code ?? consultation.secureCode ?? "");
                         toast("Code copié");
                       }}
                     >

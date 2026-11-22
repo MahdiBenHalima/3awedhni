@@ -5,7 +5,6 @@ import { Logo, LogoMark } from "@/components/brand/Logo";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -19,7 +18,7 @@ import {
 const items = [
   { title: "Tableau de bord", url: "/dashboard", icon: LayoutDashboard },
   { title: "Consultations & consignes", url: "/consultations", icon: FileAudio },
-  { title: "Simulateur patient", url: "/simulateur", icon: MessagesSquare },
+  { title: "Assistant patient", url: "/assistant-patient", icon: MessagesSquare },
   { title: "Journal d'audit", url: "/journal", icon: ScrollText },
 ] as const;
 
@@ -57,13 +56,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      {!collapsed && (
-        <SidebarFooter className="px-4 pb-4">
-          <p className="text-[0.7rem] leading-snug text-muted-foreground">
-            Version de démonstration — données fictives
-          </p>
-        </SidebarFooter>
-      )}
     </Sidebar>
   );
 }

@@ -13,3 +13,4 @@
 - [x] Dashboard : bloc « Consignes actives » retiré (gestion conservée dans Consultations & consignes)
 - [x] Dashboard : activité de la semaine sans badge ni sous-texte ; mention discrète « données fictives » dans le menu
 - [x] Connexion : retirer « Démo pré-remplie »
+- [x] Aucune mention de démo/simulation dans l'interface : footer du menu retiré, codes de vérification masqués, « Simulateur patient » → « Assistant patient », identifiants neutres (PT-xxxx / CONS-xxx), données de départ dans seed-data.ts

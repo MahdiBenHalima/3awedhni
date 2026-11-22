@@ -1,4 +1,4 @@
-import { DEMO_CONSULTATION_ID, instructions } from "./demo-data";
+import { PRIMARY_CONSULTATION_ID, instructions } from "./seed-data";
 import { analyzeMessage } from "./safety-engine";
 
 export type CheckGroup = "medical" | "access";
@@ -10,7 +10,7 @@ export interface SafetyCheck {
   run?: () => boolean;
 }
 
-const run = (text: string, list = instructions, consultation = DEMO_CONSULTATION_ID) =>
+const run = (text: string, list = instructions, consultation = PRIMARY_CONSULTATION_ID) =>
   analyzeMessage(text, list, consultation);
 
 export const SAFETY_CHECKS: SafetyCheck[] = [
@@ -48,7 +48,7 @@ export const SAFETY_CHECKS: SafetyCheck[] = [
     group: "access",
     label: "Consigne d'une autre consultation jamais citée",
     run: () =>
-      run("weldi yechki men 7al9ou", instructions, "demo-consultation-002").instruction === null,
+      run("weldi yechki men 7al9ou", instructions, "CONS-002").instruction === null,
   },
   {
     group: "access",

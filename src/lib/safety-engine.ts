@@ -4,7 +4,7 @@ import type { Instruction, Intent, Outcome, PatientLanguage } from "./care-types
  * Deterministic, conservative safety engine.
  * Red flags are evaluated BEFORE any instruction lookup, and only active,
  * physician-approved instructions of the authorised consultation can be quoted.
- * Thresholds are illustrative demo values and must be reviewed by a clinician.
+ * Thresholds are provisional values and must be reviewed by a clinician.
  */
 
 export const URGENT_TEMPERATURE = 40;

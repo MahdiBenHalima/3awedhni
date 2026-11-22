@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { DEMO_CONSULTATION_ID, instructions } from "./demo-data";
+import { PRIMARY_CONSULTATION_ID, instructions } from "./seed-data";
 import { analyzeMessage } from "./safety-engine";
 
-const run = (text: string, list = instructions) => analyzeMessage(text, list, DEMO_CONSULTATION_ID);
+const run = (text: string, list = instructions) =>
+  analyzeMessage(text, list, PRIMARY_CONSULTATION_ID);
 
 describe("safety engine", () => {
   it("Darja sore throat returns the physician's validated throat instruction", () => {
@@ -58,7 +59,7 @@ describe("safety engine", () => {
   });
 
   it("instructions of another consultation are never quoted", () => {
-    const r = analyzeMessage("weldi yechki men 7al9ou", instructions, "demo-consultation-002");
+    const r = analyzeMessage("weldi yechki men 7al9ou", instructions, "CONS-002");
     expect(r.instruction).toBeNull();
   });
 });

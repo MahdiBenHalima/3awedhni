@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
+import { Route as DashboardAssistantPatientRouteImport } from './routes/_dashboard.assistant-patient'
 import { Route as DashboardConsultationsRouteImport } from './routes/_dashboard.consultations'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
 import { Route as DashboardJournalRouteImport } from './routes/_dashboard.journal'
-import { Route as DashboardSimulateurRouteImport } from './routes/_dashboard.simulateur'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +25,12 @@ const DashboardRoute = DashboardRouteImport.update({
   id: '/_dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAssistantPatientRoute =
+  DashboardAssistantPatientRouteImport.update({
+    id: '/assistant-patient',
+    path: '/assistant-patient',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 const DashboardConsultationsRoute = DashboardConsultationsRouteImport.update({
   id: '/consultations',
   path: '/consultations',
@@ -40,48 +46,44 @@ const DashboardJournalRoute = DashboardJournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardSimulateurRoute = DashboardSimulateurRouteImport.update({
-  id: '/simulateur',
-  path: '/simulateur',
-  getParentRoute: () => DashboardRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant-patient': typeof DashboardAssistantPatientRoute
   '/consultations': typeof DashboardConsultationsRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/journal': typeof DashboardJournalRoute
-  '/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assistant-patient': typeof DashboardAssistantPatientRoute
   '/consultations': typeof DashboardConsultationsRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/journal': typeof DashboardJournalRoute
-  '/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/assistant-patient': typeof DashboardAssistantPatientRoute
   '/_dashboard/consultations': typeof DashboardConsultationsRoute
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_dashboard/journal': typeof DashboardJournalRoute
-  '/_dashboard/simulateur': typeof DashboardSimulateurRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/consultations' | '/dashboard' | '/journal' | '/simulateur'
+  fullPaths:
+    '/' | '/assistant-patient' | '/consultations' | '/dashboard' | '/journal'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/consultations' | '/dashboard' | '/journal' | '/simulateur'
+  to: '/' | '/assistant-patient' | '/consultations' | '/dashboard' | '/journal'
   id:
     | '__root__'
     | '/'
     | '/_dashboard'
+    | '/_dashboard/assistant-patient'
     | '/_dashboard/consultations'
     | '/_dashboard/dashboard'
     | '/_dashboard/journal'
-    | '/_dashboard/simulateur'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,6 +107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard/assistant-patient': {
+      id: '/_dashboard/assistant-patient'
+      path: '/assistant-patient'
+      fullPath: '/assistant-patient'
+      preLoaderRoute: typeof DashboardAssistantPatientRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/consultations': {
       id: '/_dashboard/consultations'
       path: '/consultations'
@@ -126,28 +135,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardJournalRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/_dashboard/simulateur': {
-      id: '/_dashboard/simulateur'
-      path: '/simulateur'
-      fullPath: '/simulateur'
-      preLoaderRoute: typeof DashboardSimulateurRouteImport
-      parentRoute: typeof DashboardRoute
-    }
   }
 }
 
 interface DashboardRouteChildren {
+  DashboardAssistantPatientRoute: typeof DashboardAssistantPatientRoute
   DashboardConsultationsRoute: typeof DashboardConsultationsRoute
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardJournalRoute: typeof DashboardJournalRoute
-  DashboardSimulateurRoute: typeof DashboardSimulateurRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAssistantPatientRoute: DashboardAssistantPatientRoute,
   DashboardConsultationsRoute: DashboardConsultationsRoute,
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardJournalRoute: DashboardJournalRoute,
-  DashboardSimulateurRoute: DashboardSimulateurRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(

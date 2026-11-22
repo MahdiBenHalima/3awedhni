@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCareStore } from "@/lib/care-store";
 import type { Outcome } from "@/lib/care-types";
-import { weeklyActivity } from "@/lib/demo-data";
+import { weeklyActivity } from "@/lib/seed-data";
 import { followUpQueue } from "@/lib/events";
 import { formatTime } from "@/lib/format";
 
@@ -108,8 +108,8 @@ function DashboardPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="soft">
-            <Link to="/simulateur">
-              <MessagesSquare /> Tester l'assistant
+            <Link to="/assistant-patient">
+              <MessagesSquare /> Ouvrir l'assistant patient
             </Link>
           </Button>
           <Button asChild variant="hero">

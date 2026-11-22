@@ -2,21 +2,23 @@ import type { AuditLog, Consultation, InteractionEvent, Instruction } from "./ca
 import { buildEvent } from "./events";
 import { analyzeMessage } from "./safety-engine";
 
-// All identities and conversations are fictitious demo data.
-// The physician identity is kept for approvals and audit only; the UI never displays it.
+// Jeu de données initial du front. Les identités et les conversations sont des
+// données de démarrage, destinées à être remplacées par les données du backend.
+// L'identité du médecin n'est conservée que pour les validations et le journal ;
+// l'interface ne l'affiche jamais.
 
 export const DOCTOR = {
   id: "MED-001",
   name: "Dr. Amira Ben Salah",
 };
 
-export const DEMO_CONSULTATION_ID = "demo-consultation-001";
+export const PRIMARY_CONSULTATION_ID = "CONS-001";
 
 export const consultations: Consultation[] = [
   {
-    id: DEMO_CONSULTATION_ID,
-    patientCode: "DEMO-001",
-    patientLabel: "Patient DEMO-001",
+    id: PRIMARY_CONSULTATION_ID,
+    patientCode: "PT-4821",
+    patientLabel: "Patient PT-4821",
     age: "6 ans",
     consultedAt: "2026-11-21T10:20:00",
     diagnosis: "Angine (diagnostic posé en consultation)",
@@ -25,9 +27,9 @@ export const consultations: Consultation[] = [
     verifiedContactMasked: "+216 •• ••• •82",
   },
   {
-    id: "demo-consultation-002",
-    patientCode: "DEMO-002",
-    patientLabel: "Patient DEMO-002",
+    id: "CONS-002",
+    patientCode: "PT-7350",
+    patientLabel: "Patient PT-7350",
     age: "3 ans",
     consultedAt: "2026-11-21T11:05:00",
     diagnosis: "Rhinopharyngite",
@@ -36,9 +38,9 @@ export const consultations: Consultation[] = [
     verifiedContactMasked: "+216 •• ••• •17",
   },
   {
-    id: "demo-consultation-003",
-    patientCode: "DEMO-003",
-    patientLabel: "Patient DEMO-003",
+    id: "CONS-003",
+    patientCode: "PT-1096",
+    patientLabel: "Patient PT-1096",
     age: "9 ans",
     consultedAt: "2026-11-21T15:40:00",
     diagnosis: "Gastro-entérite",
@@ -46,9 +48,9 @@ export const consultations: Consultation[] = [
     verifiedContactMasked: "+216 •• ••• •05",
   },
   {
-    id: "demo-consultation-004",
-    patientCode: "DEMO-004",
-    patientLabel: "Patient DEMO-004",
+    id: "CONS-004",
+    patientCode: "PT-6472",
+    patientLabel: "Patient PT-6472",
     age: "18 mois",
     consultedAt: "2026-11-20T09:15:00",
     diagnosis: "Otite moyenne",
@@ -60,7 +62,7 @@ export const consultations: Consultation[] = [
 export const instructions: Instruction[] = [
   {
     id: "INS-001-A",
-    consultationId: DEMO_CONSULTATION_ID,
+    consultationId: PRIMARY_CONSULTATION_ID,
     intent: "gorge",
     situation: "Douleur de gorge persistante",
     applicability:
@@ -86,7 +88,7 @@ export const instructions: Instruction[] = [
   },
   {
     id: "INS-001-B",
-    consultationId: DEMO_CONSULTATION_ID,
+    consultationId: PRIMARY_CONSULTATION_ID,
     intent: "fievre",
     situation: "Fièvre modérée (< 39,5 °C)",
     applicability: "Température déclarée inférieure à 39,5 °C, enfant réactif",
@@ -107,7 +109,7 @@ export const instructions: Instruction[] = [
   },
   {
     id: "INS-001-C",
-    consultationId: DEMO_CONSULTATION_ID,
+    consultationId: PRIMARY_CONSULTATION_ID,
     intent: "alimentation",
     situation: "Refus de manger",
     applicability: "L'enfant boit mais mange peu à cause de la douleur",
@@ -127,7 +129,7 @@ export const instructions: Instruction[] = [
   },
   {
     id: "INS-001-D",
-    consultationId: DEMO_CONSULTATION_ID,
+    consultationId: PRIMARY_CONSULTATION_ID,
     intent: "oubli",
     situation: "Oubli d'une prise du traitement",
     applicability: "Une seule prise oubliée",
@@ -173,44 +175,44 @@ const seed = (
 export const initialEvents: InteractionEvent[] = [
   seed(
     "EVT-1042",
-    "DEMO-001",
-    DEMO_CONSULTATION_ID,
+    "PT-4821",
+    PRIMARY_CONSULTATION_ID,
     "2026-11-21T22:47:00",
     "Weldi skhantou 41 w ta3eb barcha",
   ),
   seed(
     "EVT-1041",
-    "DEMO-001",
-    DEMO_CONSULTATION_ID,
+    "PT-4821",
+    PRIMARY_CONSULTATION_ID,
     "2026-11-21T21:12:00",
     "ولدي مازال يشكي من حلقو، شنوة نعمل؟",
   ),
   seed(
     "EVT-1040",
-    "DEMO-002",
-    "demo-consultation-002",
+    "PT-7350",
+    "CONS-002",
     "2026-11-21T20:30:00",
     "3andou fièvre 39.7 w ma y7ebbech yekel",
     "contact_tente",
   ),
   seed(
     "EVT-1039",
-    "DEMO-002",
-    "demo-consultation-002",
+    "PT-7350",
+    "CONS-002",
     "2026-11-21T19:05:00",
     "Est-ce qu'il peut aller à l'école demain ?",
   ),
   seed(
     "EVT-1038",
-    "DEMO-001",
-    DEMO_CONSULTATION_ID,
+    "PT-4821",
+    PRIMARY_CONSULTATION_ID,
     "2026-11-21T18:22:00",
     "nsit eddwa mta3 sbe7, chna3mel?",
   ),
   seed(
     "EVT-1037",
-    "DEMO-004",
-    "demo-consultation-004",
+    "PT-6472",
+    "CONS-004",
     "2026-11-21T14:10:00",
     "بنتي ما عندهاش السخانة أما تبكي برشا",
     "recontacte",
@@ -237,8 +239,8 @@ export const initialAudit: AuditLog[] = [
   },
   {
     id: "AUD-310",
-    actor: "Patient DEMO-001 (représentant)",
-    resource: "demo-consultation-001",
+    actor: "Représentant du patient PT-4821",
+    resource: "CONS-001",
     action: "Authentification OTP réussie",
     timestamp: "2026-11-21T22:46:31",
   },
@@ -252,34 +254,34 @@ export const initialAudit: AuditLog[] = [
   {
     id: "AUD-308",
     actor: "Système",
-    resource: "demo-consultation-001",
+    resource: "CONS-001",
     action: "Transcription et extraction du brouillon",
     timestamp: "2026-11-21T10:33:12",
   },
   {
     id: "AUD-307",
     actor: "Dr. Amira Ben Salah",
-    resource: "demo-consultation-001",
+    resource: "CONS-001",
     action: "Audio individuel chargé (1 min 42 s)",
     timestamp: "2026-11-21T10:31:50",
   },
   {
     id: "AUD-306",
     actor: "Inconnu",
-    resource: "demo-consultation-002",
+    resource: "CONS-002",
     action: "Accès refusé : nom + date de naissance sans 2e facteur",
     timestamp: "2026-11-21T09:58:20",
   },
   {
     id: "AUD-305",
     actor: "Dr. Amira Ben Salah",
-    resource: "demo-consultation-004",
+    resource: "CONS-004",
     action: "Consultation révoquée",
     timestamp: "2026-11-20T17:02:00",
   },
 ];
 
-export const demoTranscript = `Patient DEMO-001, né le 14 mars 2020, consultation du 21 novembre 2026. Diagnostic : angine. Traitement déjà prescrit selon l'ordonnance remise aux parents.
+export const seedTranscript = `Patient PT-4821, né le 14 mars 2020, consultation du 21 novembre 2026. Diagnostic : angine. Traitement déjà prescrit selon l'ordonnance remise aux parents.
 Situation un : si la gorge reste douloureuse, poursuivre le traitement jusqu'au bout, boissons tièdes ; si ça persiste après trois jours de traitement, reprendre rendez-vous.
 Situation deux : fièvre en dessous de trente-neuf et demi, antipyrétique selon l'ordonnance, découvrir l'enfant, faire boire ; au-delà de quarante-huit heures, consulter.
 Situation trois : s'il refuse de manger, petites quantités, aliments mous et frais, l'hydratation d'abord.

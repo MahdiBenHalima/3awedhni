@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { initialEvents } from "./demo-data";
+import { initialEvents } from "./seed-data";
 import { followUpQueue, initialFollowUp } from "./events";
 import { runSafetyChecks } from "./safety-checks";
 

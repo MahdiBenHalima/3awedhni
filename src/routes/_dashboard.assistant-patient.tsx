@@ -8,20 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCareStore } from "@/lib/care-store";
 import type { Outcome } from "@/lib/care-types";
-import { DEMO_CONSULTATION_ID } from "@/lib/demo-data";
+import { PRIMARY_CONSULTATION_ID } from "@/lib/seed-data";
 import { buildEvent } from "@/lib/events";
 import { analyzeMessage, type Analysis } from "@/lib/safety-engine";
 
-export const Route = createFileRoute("/_dashboard/simulateur")({
+export const Route = createFileRoute("/_dashboard/assistant-patient")({
   head: () => ({
     meta: [
-      { title: "Simulateur patient — 3awedhni عوضني" },
+      { title: "Assistant patient — 3awedhni عوضني" },
       {
         name: "description",
         content:
-          "Testez l'assistant patient en Darja, Arabizi ou français dans un simulateur de messagerie.",
+          "Messagerie patient sécurisée en Darja, Arabizi ou français, adossée aux consignes validées.",
       },
-      { property: "og:title", content: "Simulateur patient — 3awedhni عوضني" },
+      { property: "og:title", content: "Assistant patient — 3awedhni عوضني" },
       {
         property: "og:description",
         content: "Questions en Darja ou Arabizi : consigne fidèle ou orientation urgente.",
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_dashboard/simulateur")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: SimulatorPage,
+  component: AssistantPatientPage,
 });
 
 const PATIENT_CODE = "3AW-7K2-Q9";
@@ -61,7 +61,7 @@ function now() {
   return new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 }
 
-function SimulatorPage() {
+function AssistantPatientPage() {
   const { instructions, addEvent, addAudit } = useCareStore();
   const [authed, setAuthed] = useState(false);
   const [code, setCode] = useState(PATIENT_CODE);
@@ -80,14 +80,14 @@ function SimulatorPage() {
     e.preventDefault();
     if (code.trim().toUpperCase() !== PATIENT_CODE || otp.trim() !== PATIENT_OTP) {
       setAuthError("Code ou OTP invalide. Nom et date de naissance seuls ne suffisent pas.");
-      addAudit("Inconnu", DEMO_CONSULTATION_ID, "Échec d'authentification patient");
+      addAudit("Inconnu", PRIMARY_CONSULTATION_ID, "Échec d'authentification patient");
       return;
     }
     setAuthed(true);
     setAuthError(null);
     addAudit(
-      "Patient DEMO-001 (représentant)",
-      DEMO_CONSULTATION_ID,
+      "Représentant du patient PT-4821",
+      PRIMARY_CONSULTATION_ID,
       "Authentification OTP réussie",
     );
     setMessages([
@@ -103,7 +103,7 @@ function SimulatorPage() {
   function send(text: string) {
     const clean = text.trim();
     if (!clean) return;
-    const analysis = analyzeMessage(clean, instructions, DEMO_CONSULTATION_ID);
+    const analysis = analyzeMessage(clean, instructions, PRIMARY_CONSULTATION_ID);
     setLast(analysis);
     setMessages((prev) => [
       ...prev,
@@ -122,15 +122,15 @@ function SimulatorPage() {
     addEvent(
       buildEvent(analysis, {
         id: `EVT-${Math.floor(Math.random() * 9000 + 1000)}`,
-        patientCode: "DEMO-001",
-        consultationId: DEMO_CONSULTATION_ID,
+        patientCode: "PT-4821",
+        consultationId: PRIMARY_CONSULTATION_ID,
         timestamp: new Date().toISOString(),
         message: clean,
       }),
     );
     addAudit(
       "Assistant 3awedhni",
-      DEMO_CONSULTATION_ID,
+      PRIMARY_CONSULTATION_ID,
       analysis.outcome === "urgence"
         ? "Orientation urgente émise"
         : analysis.instruction
@@ -144,9 +144,9 @@ function SimulatorPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
         <span className="eyebrow">Parcours patient</span>
-        <h1 className="mt-2 text-3xl font-bold">Simulateur patient</h1>
+        <h1 className="mt-2 text-3xl font-bold">Assistant patient</h1>
         <p className="mt-1 text-muted-foreground">
-          Simulation de messagerie. Chaque échange apparaît dans votre tableau de bord.
+          Messagerie patient sécurisée. Chaque échange apparaît dans votre tableau de bord.
         </p>
       </div>
 
@@ -161,7 +161,7 @@ function SimulatorPage() {
             <div className="leading-tight">
               <div className="text-sm font-semibold">3awedhni عوضني</div>
               <div className="text-[0.7rem] opacity-80">
-                {authed ? "en ligne · DEMO-001" : "vérification requise"}
+                {authed ? "en ligne · PT-4821" : "vérification requise"}
               </div>
             </div>
           </div>
@@ -200,10 +200,6 @@ function SimulatorPage() {
                   placeholder="6 chiffres"
                   className="h-11 rounded-xl bg-card font-mono tracking-widest"
                 />
-                <p className="text-[0.7rem] text-muted-foreground">
-                  OTP de démonstration :{" "}
-                  <span className="font-semibold text-primary-deep">{PATIENT_OTP}</span>
-                </p>
               </div>
               {authError && <p className="text-xs text-urgent">{authError}</p>}
               <Button type="submit" variant="hero" className="w-full">
@@ -270,7 +266,7 @@ function SimulatorPage() {
         {/* Engine panel */}
         <div className="space-y-6">
           <div className="rounded-3xl bg-card p-6 shadow-card">
-            <h2 className="text-lg font-semibold">Scénarios de démonstration</h2>
+            <h2 className="text-lg font-semibold">Scénarios de validation</h2>
             <p className="text-sm text-muted-foreground">
               {authed
                 ? "Cliquez pour envoyer le message au nom du patient."
