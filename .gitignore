@@ -1,3 +1,27 @@
+# Environment and Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.token
+credentials*
+secrets*
+
+# SQLite & databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Audio / media files
+*.wav
+*.mp3
+*.mp4
+*.m4a
+*.webm
+*.ogg
+
 # Logs
 logs
 *.log

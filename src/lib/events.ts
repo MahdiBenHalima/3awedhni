@@ -2,11 +2,11 @@ import type { FollowUpStatus, InteractionEvent, Outcome } from "./care-types";
 import type { Analysis } from "./safety-engine";
 
 export const FOLLOW_UP_LABELS: Record<FollowUpStatus, string> = {
-  aucun: "Aucun suivi requis",
-  a_examiner: "À examiner",
-  contact_tente: "Contact tenté",
-  recontacte: "Patient recontacté",
-  termine: "Suivi terminé",
+  aucun: "No follow-up needed",
+  a_examiner: "To review",
+  contact_tente: "Contact attempted",
+  recontacte: "Patient reached",
+  termine: "Follow-up completed",
 };
 
 /** Deferred follow-up: plain transmitted instructions never create a mandatory callback. */
@@ -34,13 +34,13 @@ export function followUpQueue(events: InteractionEvent[]): InteractionEvent[] {
 
 export function safetyRuleFor(analysis: Analysis): string {
   if (analysis.outcome === "urgence")
-    return "Signe d'alerte détecté avant toute recherche de consigne → orientation urgente immédiate";
-  if (analysis.injection) return "Tentative de contournement → refus, aucune donnée exposée";
+    return "Emergency red flag detected prior to instruction lookup → immediate emergency orientation";
+  if (analysis.injection) return "Prompt injection or bypass attempt → refused, zero data exposed";
   if (analysis.outcome === "escalade")
-    return "Situation hors consigne validée → avis médical recommandé";
+    return "Situation outside validated instructions → clinical review recommended";
   if (analysis.outcome === "non_couverte")
-    return "Aucune consigne validée et active applicable → pas d'improvisation, orientation humaine";
-  return "Aucun signe d'alerte · consigne validée et active de la consultation autorisée";
+    return "No active validated instruction applicable → strictly no improvisation, human referral";
+  return "No red flags · validated and active consultation instruction authorized";
 }
 
 export function buildEvent(

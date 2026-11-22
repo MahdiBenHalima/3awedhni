@@ -26,15 +26,15 @@ import { formatTime } from "@/lib/format";
 export const Route = createFileRoute("/_dashboard/dashboard")({
   head: () => ({
     meta: [
-      { title: "Tableau de bord — 3awedhni عوضني" },
+      { title: "Dashboard — 3awedhni عوضني" },
       {
         name: "description",
-        content: "Demandes reçues pendant votre absence, patients à rappeler et activité de la semaine.",
+        content: "Patient inquiries received during your absence, callbacks, and weekly activity.",
       },
-      { property: "og:title", content: "Tableau de bord — 3awedhni عوضني" },
+      { property: "og:title", content: "Dashboard — 3awedhni عوضني" },
       {
         property: "og:description",
-        content: "Ce que vos patients ont demandé à l'assistant pendant votre absence.",
+        content: "What your patients asked the assistant while you were away.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -67,10 +67,10 @@ const STAT_RING: Record<Outcome, string> = {
 };
 
 const DEFINITIONS: Record<Outcome, string> = {
-  transmise: "Consigne approuvée et applicable communiquée",
-  non_couverte: "Aucune consigne applicable — pas d'improvisation",
-  escalade: "Réévaluation ou avis humain recommandé",
-  urgence: "Signe d'alerte — orientation urgente indiquée",
+  transmise: "Approved and applicable instruction communicated",
+  non_couverte: "No applicable instruction — strictly no improvisation",
+  escalade: "Re-evaluation or clinical opinion recommended",
+  urgence: "Red flag detected — immediate emergency referral",
 };
 
 function DashboardPage() {
@@ -100,21 +100,21 @@ function DashboardPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold sm:text-4xl">
-            Bonjour, <span className="text-gradient-primary">Docteur</span>
+            Hello, <span className="text-gradient-primary">Doctor</span>
           </h1>
           <p className="mt-1 text-muted-foreground">
-            Retrouvez les demandes reçues pendant votre absence et les suivis à examiner.
+            Review inquiries received during your absence and pending follow-ups.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="soft">
             <Link to="/assistant-patient">
-              <MessagesSquare /> Ouvrir l'assistant patient
+              <MessagesSquare /> Open Patient Assistant
             </Link>
           </Button>
           <Button asChild variant="hero">
             <Link to="/consultations">
-              <FileAudio /> Nouvelle consultation
+              <FileAudio /> New Consultation
             </Link>
           </Button>
         </div>
@@ -127,11 +127,11 @@ function DashboardPage() {
           </div>
           <div className="min-w-[12rem] flex-1">
             <p className="font-semibold text-urgent">
-              Urgence potentielle signalée — orientation urgente transmise au patient.
+              Potential emergency reported — immediate emergency instructions provided to patient.
             </p>
             <p className="text-sm text-foreground">
-              {urgent.patientCode} · {formatTime(urgent.timestamp)} · {urgent.summary}. Vérifiez les
-              suites données lorsque vous êtes disponible.
+              {urgent.patientCode} · {formatTime(urgent.timestamp)} · {urgent.summary}. Verify
+              patient outcome when available.
             </p>
           </div>
           <Button
@@ -139,7 +139,7 @@ function DashboardPage() {
             className="w-full sm:w-auto"
             onClick={() => setSelected(urgent.id)}
           >
-            Examiner l'événement <ArrowRight />
+            Review Event <ArrowRight />
           </Button>
         </div>
       )}
@@ -175,23 +175,21 @@ function DashboardPage() {
           })}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Ces catégories décrivent le résultat de l'interaction, pas une échelle de gravité. Cliquez
-          pour filtrer.
+          These categories describe the interaction outcome, not a severity scale. Click to filter.
         </p>
       </div>
 
       <section ref={tableRef} className="scroll-mt-20 rounded-3xl bg-card p-5 shadow-card sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold">Patients ayant contacté l'assistant</h2>
+            <h2 className="text-lg font-semibold">Patients who contacted the assistant</h2>
             <p className="text-sm text-muted-foreground">
-              Qui, quand, pourquoi et quelle réponse a été donnée. Cliquez sur une ligne pour le
-              détail.
+              Who, when, why, and the exact response provided. Click a row for full details.
             </p>
           </div>
           <Button asChild variant="ghost" size="sm">
             <Link to="/journal">
-              Historique <ArrowRight />
+              History <ArrowRight />
             </Link>
           </Button>
         </div>
@@ -201,7 +199,7 @@ function DashboardPage() {
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Identifiant, motif…"
+              placeholder="Identifier, reason…"
               className="h-9 rounded-full bg-background pl-9"
             />
           </div>
@@ -216,7 +214,7 @@ function DashboardPage() {
                   : "bg-card hover:border-primary/50"
               }`}
             >
-              {f === "all" ? "Tous" : OUTCOME_META[f].label}
+              {f === "all" ? "All" : OUTCOME_META[f].label}
             </button>
           ))}
         </div>
@@ -225,18 +223,18 @@ function DashboardPage() {
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="pb-3 font-semibold">Patient</th>
-                <th className="pb-3 font-semibold">Heure</th>
-                <th className="pb-3 font-semibold">Motif résumé</th>
-                <th className="pb-3 font-semibold">Résultat</th>
-                <th className="pb-3 font-semibold">Consigne / source</th>
-                <th className="pb-3 font-semibold">Suivi</th>
+                <th className="pb-3 font-semibold">Time</th>
+                <th className="pb-3 font-semibold">Summary</th>
+                <th className="pb-3 font-semibold">Outcome</th>
+                <th className="pb-3 font-semibold">Instruction / Source</th>
+                <th className="pb-3 font-semibold">Follow-up</th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-8 text-center text-muted-foreground">
-                    Aucune interaction ne correspond.
+                    No matching interactions found.
                   </td>
                 </tr>
               )}
@@ -250,9 +248,6 @@ function DashboardPage() {
                 >
                   <td className="py-3 pl-1 pr-3">
                     <div className="whitespace-nowrap font-semibold text-ink">{e.patientCode}</div>
-                    <Badge variant="soft" className="mt-1 text-[0.65rem]">
-                      {e.language}
-                    </Badge>
                   </td>
                   <td className="py-3 pr-3 text-muted-foreground">{formatTime(e.timestamp)}</td>
                   <td className="max-w-[18rem] py-3 pr-3">
@@ -270,7 +265,7 @@ function DashboardPage() {
                         {e.instructionId} · v{e.instructionVersion}
                       </span>
                     ) : (
-                      <span className="text-muted-foreground">Règle de sécurité</span>
+                      <span className="text-muted-foreground">Safety rule</span>
                     )}
                   </td>
                   <td className="py-3">
@@ -284,15 +279,14 @@ function DashboardPage() {
       </section>
 
       <section className="rounded-3xl bg-card p-5 shadow-card sm:p-6">
-        <h2 className="text-lg font-semibold">Suivi des patients</h2>
+        <h2 className="text-lg font-semibold">Patient Follow-up Queue</h2>
         <p className="text-sm text-muted-foreground">
-          Suivi différé, à traiter lorsque vous êtes disponible. Urgences déjà orientées en
-          premier.
+          Deferred follow-up, to address when available. Urgent cases prioritized.
         </p>
         <ul className="mt-4 grid gap-2.5 lg:grid-cols-2">
           {queue.length === 0 && (
             <li className="rounded-2xl bg-success-soft p-4 text-sm text-success">
-              Aucun suivi en attente.
+              No pending follow-ups.
             </li>
           )}
           {queue.map((e) => (
@@ -320,7 +314,7 @@ function DashboardPage() {
       </section>
 
       <section className="rounded-3xl bg-card p-5 shadow-card sm:p-6">
-        <h2 className="text-lg font-semibold">Activité de la semaine</h2>
+        <h2 className="text-lg font-semibold">Weekly Activity</h2>
         <div className="mt-4 h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={weeklyActivity} barSize={22}>
@@ -345,12 +339,12 @@ function DashboardPage() {
                   background: "var(--card)",
                 }}
               />
-              <Bar dataKey="transmise" name="Transmise" stackId="a" fill="var(--success)" />
-              <Bar dataKey="non_couverte" name="Non couverte" stackId="a" fill="var(--warning)" />
-              <Bar dataKey="escalade" name="Escalade" stackId="a" fill="var(--escalate)" />
+              <Bar dataKey="transmise" name="Delivered" stackId="a" fill="var(--success)" />
+              <Bar dataKey="non_couverte" name="Uncovered" stackId="a" fill="var(--warning)" />
+              <Bar dataKey="escalade" name="Escalation" stackId="a" fill="var(--escalate)" />
               <Bar
                 dataKey="urgence"
-                name="Urgence"
+                name="Emergency"
                 stackId="a"
                 fill="var(--urgent)"
                 radius={[6, 6, 0, 0]}

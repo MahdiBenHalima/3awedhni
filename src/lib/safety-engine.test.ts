@@ -32,6 +32,14 @@ describe("safety engine", () => {
 
   it("breathing difficulty is an alert sign", () => {
     expect(run("يتنفس بصعوبة").outcome).toBe("urgence");
+    expect(run("difficulté respiratoire").outcome).toBe("urgence");
+  });
+
+  it("explicit red flag keywords trigger urgent orientation", () => {
+    expect(run("redflag").outcome).toBe("urgence");
+    expect(run("red flag").outcome).toBe("urgence");
+    expect(run("signe d'alerte").outcome).toBe("urgence");
+    expect(run("c'est une urgence").outcome).toBe("urgence");
   });
 
   it("respects Darja negation of fever", () => {

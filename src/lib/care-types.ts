@@ -1,4 +1,16 @@
-export type Intent = "gorge" | "fievre" | "alimentation" | "oubli";
+export type Intent =
+  | "gorge"
+  | "fievre"
+  | "alimentation"
+  | "oubli"
+  | "toux"
+  | "respiration"
+  | "antibiotique"
+  | "nez"
+  | "digestif"
+  | "oreille"
+  | "eruption"
+  | "autre";
 export type Outcome = "transmise" | "non_couverte" | "escalade" | "urgence";
 export type PatientLanguage = "Darja" | "Arabizi" | "Français" | "Mixte";
 
@@ -21,6 +33,7 @@ export interface Instruction {
   approvedBy: string;
   approvedAt: string;
   active: boolean;
+  category?: "home_instruction" | "red_flag_alert";
   /** Edited text awaiting physician validation; never used by the assistant until approved. */
   pendingAction?: string;
 }

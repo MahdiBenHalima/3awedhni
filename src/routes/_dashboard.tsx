@@ -33,7 +33,7 @@ function DashboardLayout() {
 
 function TopBar() {
   const navigate = useNavigate();
-  const { events } = useCareStore();
+  const { events, isConnectedToBackend } = useCareStore();
   const pending = followUpQueue(events).length;
 
   return (
@@ -42,16 +42,22 @@ function TopBar() {
       <div className="relative hidden max-w-sm flex-1 md:block">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          placeholder="Rechercher un patient (ex. PT-4821)"
+          placeholder="Search patient (e.g. PT-4821)..."
           className="h-10 rounded-full bg-card pl-9"
         />
       </div>
       <div className="ml-auto flex items-center gap-2">
+        {isConnectedToBackend && (
+          <span className="hidden items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 sm:inline-flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            API Server Active
+          </span>
+        )}
         <Button
           variant="ghost"
           size="icon"
           className="relative rounded-full"
-          aria-label="Suivis à examiner"
+          aria-label="Follow-ups to review"
         >
           <Bell />
           {pending > 0 && (
@@ -67,15 +73,15 @@ function TopBar() {
             </AvatarFallback>
           </Avatar>
           <div className="leading-tight">
-            <div className="text-sm font-semibold text-ink">Espace médecin</div>
-            <div className="text-[0.7rem] text-muted-foreground">Compte médecin</div>
+            <div className="text-sm font-semibold text-ink">Physician Portal</div>
+            <div className="text-[0.7rem] text-muted-foreground">Doctor Account</div>
           </div>
         </div>
         <Button
           variant="ghost"
           size="icon"
           className="rounded-full"
-          aria-label="Se déconnecter"
+          aria-label="Sign out"
           onClick={() => navigate({ to: "/", replace: true })}
         >
           <LogOut />

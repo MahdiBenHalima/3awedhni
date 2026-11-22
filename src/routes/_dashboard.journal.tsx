@@ -12,15 +12,15 @@ import { displayActor, formatDateTime } from "@/lib/format";
 export const Route = createFileRoute("/_dashboard/journal")({
   head: () => ({
     meta: [
-      { title: "Journal d'audit — 3awedhni عوضني" },
+      { title: "Audit Log — 3awedhni عوضني" },
       {
         name: "description",
-        content: "Historique des interactions patients et journal d'audit des actions.",
+        content: "Patient interaction history and immutable action audit log.",
       },
-      { property: "og:title", content: "Journal d'audit — 3awedhni عوضني" },
+      { property: "og:title", content: "Audit Log — 3awedhni عوضني" },
       {
         property: "og:description",
-        content: "Chaque réponse, sa source et sa décision de sécurité, tracées.",
+        content: "Every response, its source instruction, and its deterministic safety decision.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -39,10 +39,10 @@ function JournalPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <div>
-        <span className="eyebrow">Traçabilité</span>
-        <h1 className="mt-2 text-3xl font-bold">Journal d'audit</h1>
+        <span className="eyebrow">Traceability</span>
+        <h1 className="mt-2 text-3xl font-bold">Audit Log</h1>
         <p className="mt-1 text-muted-foreground">
-          Données minimisées : seuls le motif résumé et la décision sont conservés.
+          Minimized data: only summarized intent, safety rule, and decision are retained.
         </p>
       </div>
 
@@ -75,7 +75,7 @@ function JournalPage() {
                     : "bg-card hover:border-primary/50"
                 }`}
               >
-                {f === "all" ? "Tous" : OUTCOME_META[f].label}
+                {f === "all" ? "All" : OUTCOME_META[f].label}
                 <span className="ml-1.5 text-xs text-muted-foreground">
                   {f === "all" ? events.length : events.filter((e) => e.outcome === f).length}
                 </span>
@@ -86,11 +86,11 @@ function JournalPage() {
             <table className="w-full min-w-[760px] text-sm">
               <thead>
                 <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                  <th className="pb-3 font-semibold">Événement</th>
+                  <th className="pb-3 font-semibold">Event</th>
                   <th className="pb-3 font-semibold">Date</th>
                   <th className="pb-3 font-semibold">Patient</th>
                   <th className="pb-3 font-semibold">Message</th>
-                  <th className="pb-3 font-semibold">Décision</th>
+                  <th className="pb-3 font-semibold">Decision</th>
                   <th className="pb-3 font-semibold">Source</th>
                 </tr>
               </thead>
@@ -101,9 +101,6 @@ function JournalPage() {
                     <td className="py-3 pr-3 whitespace-nowrap">{formatDateTime(e.timestamp)}</td>
                     <td className="py-3 pr-3">
                       <div className="font-semibold text-ink">{e.patientCode}</div>
-                      <Badge variant="soft" className="mt-1 text-[0.65rem]">
-                        {e.language}
-                      </Badge>
                     </td>
                     <td className="max-w-[18rem] py-3 pr-3">
                       <div dir="auto">« {e.message} »</div>
@@ -118,7 +115,7 @@ function JournalPage() {
                           {e.instructionId} · v{e.instructionVersion}
                         </span>
                       ) : (
-                        <span className="text-muted-foreground">Règle de sécurité</span>
+                        <span className="text-muted-foreground">Safety rule</span>
                       )}
                     </td>
                   </tr>

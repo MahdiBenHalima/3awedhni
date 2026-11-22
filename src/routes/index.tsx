@@ -19,16 +19,16 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Connexion médecin — 3awedhni عوضني" },
+      { title: "Physician Login — 3awedhni عوضني" },
       {
         name: "description",
         content:
-          "Espace médecin 3awedhni : validez vos consignes post-consultation et suivez les échanges de vos patients.",
+          "3awedhni physician portal: approve post-consultation instructions and monitor patient exchanges.",
       },
-      { property: "og:title", content: "Connexion médecin — 3awedhni عوضني" },
+      { property: "og:title", content: "Physician Login — 3awedhni عوضني" },
       {
         property: "og:description",
-        content: "Le médecin décide et valide. 3awedhni transmet, en Darja, Arabizi ou français.",
+        content: "The physician decides and validates. 3awedhni delivers in Darja, Arabizi, or French.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -50,7 +50,7 @@ function LoginPage() {
   function submitCredentials(e: FormEvent) {
     e.preventDefault();
     if (!email || !password) {
-      setError("Renseignez votre email et votre mot de passe.");
+      setError("Please enter your professional email and password.");
       return;
     }
     setError(null);
@@ -60,7 +60,7 @@ function LoginPage() {
   function submitOtp(e: FormEvent) {
     e.preventDefault();
     if (otp !== ACCESS_OTP) {
-      setError("Code incorrect. Réessayez ou demandez un nouveau code.");
+      setError("Incorrect code. Please try again or request a new code.");
       return;
     }
     navigate({ to: "/dashboard" });
@@ -86,20 +86,20 @@ function LoginPage() {
               {step === "credentials" ? (
                 <form onSubmit={submitCredentials} className="space-y-5">
                   <div>
-                    <h1 className="text-2xl font-semibold">Espace médecin</h1>
+                    <h1 className="text-2xl font-semibold">Physician Portal</h1>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Connectez-vous pour valider vos consignes et suivre vos patients.
+                      Sign in to review and approve instructions and monitor patient follow-ups.
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email professionnel</Label>
+                    <Label htmlFor="email">Professional Email</Label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input
                         id="email"
                         type="email"
                         value={email}
-                        placeholder="Email professionnel"
+                        placeholder="doctor@hospital.tn"
                         autoComplete="email"
                         onChange={(e) => setEmail(e.target.value)}
                         className="h-11 rounded-xl bg-card pl-10"
@@ -107,7 +107,7 @@ function LoginPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Mot de passe</Label>
+                    <Label htmlFor="password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input
@@ -121,12 +121,12 @@ function LoginPage() {
                   </div>
                   {error && <p className="text-sm text-urgent">{error}</p>}
                   <Button type="submit" variant="hero" size="lg" className="w-full">
-                    Se connecter
+                    Sign In
                     <ArrowRight />
                   </Button>
                   <div className="flex items-start gap-3 rounded-2xl bg-primary-soft/70 p-3 text-xs text-primary-deep">
                     <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
-                    <p>Double authentification obligatoire. Accès limité à vos propres dossiers.</p>
+                    <p>Two-factor authentication required. Access strictly limited to your authorized records.</p>
                   </div>
                 </form>
               ) : (
@@ -135,9 +135,9 @@ function LoginPage() {
                     <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-soft text-primary">
                       <KeyRound className="h-5 w-5" />
                     </div>
-                    <h1 className="text-2xl font-semibold">Vérification</h1>
+                    <h1 className="text-2xl font-semibold">Verification</h1>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Saisissez le code à 6 chiffres envoyé à votre numéro vérifié.
+                      Enter the 6-digit verification code sent to your registered mobile device.
                     </p>
                   </div>
                   <InputOTP maxLength={6} value={otp} onChange={setOtp} autoFocus>
@@ -153,7 +153,7 @@ function LoginPage() {
                   </InputOTP>
                   {error && <p className="text-sm text-urgent">{error}</p>}
                   <Button type="submit" variant="hero" size="lg" className="w-full">
-                    Accéder au tableau de bord
+                    Access Dashboard
                     <ArrowRight />
                   </Button>
                   <button
@@ -164,22 +164,22 @@ function LoginPage() {
                     }}
                     className="w-full text-center text-sm text-muted-foreground hover:text-primary"
                   >
-                    Retour
+                    Back
                   </button>
                 </form>
               )}
             </div>
 
-            {/* Right: product story, no doctor photo */}
+            {/* Right: product story */}
             <div className="relative">
-              <span className="eyebrow">Après la consultation, votre voix continue</span>
+              <span className="eyebrow">Continuous Patient Care</span>
               <h2 className="mt-4 max-w-xl text-4xl font-bold leading-[1.1] sm:text-5xl">
-                Vos consignes, <span className="text-gradient-primary">dans la langue</span> de vos
-                patients
+                You might think your doctor isn't there.{" "}
+                <span className="text-gradient-primary">Rethink about that.</span>
               </h2>
               <p className="mt-5 max-w-lg text-[0.97rem] leading-relaxed text-muted-foreground">
-                Un vocal après chaque consultation. Vous relisez, vous validez. 3awedhni répond en
-                Darja, Arabizi ou français — et oriente vers les urgences au moindre signe d'alerte.
+                A voice note after each consultation. You review, you approve. 3awedhni responds in
+                Darja, Arabizi, or French — and routes to emergency care at the slightest red flag.
               </p>
 
               <div className="relative mt-8 grid gap-4 sm:grid-cols-[1fr_auto]">
@@ -190,8 +190,8 @@ function LoginPage() {
                       <Stethoscope className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-ink">Assistant 3awedhni</div>
-                      <div className="text-[0.7rem] text-success">consignes validées · v2</div>
+                      <div className="text-sm font-semibold text-ink">3awedhni Assistant</div>
+                      <div className="text-[0.7rem] text-success">validated instructions · v2</div>
                     </div>
                   </div>
                   <div className="space-y-2.5 text-sm">
@@ -205,7 +205,7 @@ function LoginPage() {
                     <div className="w-fit max-w-[90%] rounded-2xl rounded-tl-sm bg-muted px-3 py-2 text-foreground">
                       Kammel eddwa lel ekher w a3tih machroubet dafya…
                       <div className="mt-1 flex items-center gap-1 text-[0.68rem] text-primary-deep">
-                        <CheckCheck className="h-3 w-3" /> Source : consigne INS-001-A
+                        <CheckCheck className="h-3 w-3" /> Source: instruction INS-001-A
                       </div>
                     </div>
                   </div>

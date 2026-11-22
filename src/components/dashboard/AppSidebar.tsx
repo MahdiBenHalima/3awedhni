@@ -16,10 +16,10 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Tableau de bord", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Consultations & consignes", url: "/consultations", icon: FileAudio },
-  { title: "Assistant patient", url: "/assistant-patient", icon: MessagesSquare },
-  { title: "Journal d'audit", url: "/journal", icon: ScrollText },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Consultations & Instructions", url: "/consultations", icon: FileAudio },
+  { title: "Patient Assistant", url: "/assistant-patient", icon: MessagesSquare },
+  { title: "Audit Log", url: "/journal", icon: ScrollText },
 ] as const;
 
 export function AppSidebar() {
@@ -34,7 +34,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Espace médecin</SidebarGroupLabel>
+          <SidebarGroupLabel>Physician Portal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-1">
               {items.map((item) => (

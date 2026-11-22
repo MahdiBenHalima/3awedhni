@@ -12,10 +12,10 @@ export const OUTCOME_META: Record<
     icon: typeof CheckCircle2;
   }
 > = {
-  transmise: { label: "Consigne transmise", variant: "success", icon: CheckCircle2 },
-  non_couverte: { label: "Non couverte", variant: "warning", icon: HelpCircle },
-  escalade: { label: "Escalade", variant: "escalate", icon: PhoneForwarded },
-  urgence: { label: "Urgence potentielle", variant: "urgent", icon: AlertTriangle },
+  transmise: { label: "Instruction delivered", variant: "success", icon: CheckCircle2 },
+  non_couverte: { label: "Uncovered", variant: "warning", icon: HelpCircle },
+  escalade: { label: "Escalation", variant: "escalate", icon: PhoneForwarded },
+  urgence: { label: "Emergency red flag", variant: "urgent", icon: AlertTriangle },
 };
 
 export function StatusBadge({ outcome }: { outcome: Outcome }) {
