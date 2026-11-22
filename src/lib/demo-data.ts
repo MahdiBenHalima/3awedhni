@@ -1,12 +1,13 @@
 import type { AuditLog, Consultation, InteractionEvent, Instruction } from "./care-types";
+import { buildEvent } from "./events";
+import { analyzeMessage } from "./safety-engine";
 
 // All identities and conversations are fictitious demo data.
+// The physician identity is kept for approvals and audit only; the UI never displays it.
 
 export const DOCTOR = {
+  id: "MED-001",
   name: "Dr. Amira Ben Salah",
-  specialty: "Pédiatre",
-  email: "dr.bensalah@3awedhni.tn",
-  initials: "AB",
 };
 
 export const DEMO_CONSULTATION_ID = "demo-consultation-001";
@@ -21,6 +22,7 @@ export const consultations: Consultation[] = [
     diagnosis: "Angine (diagnostic posé en consultation)",
     status: "validée",
     secureCode: "3AW-7K2-Q9",
+    verifiedContactMasked: "+216 •• ••• •82",
   },
   {
     id: "demo-consultation-002",
@@ -31,6 +33,7 @@ export const consultations: Consultation[] = [
     diagnosis: "Rhinopharyngite",
     status: "validée",
     secureCode: "3AW-M4P-X1",
+    verifiedContactMasked: "+216 •• ••• •17",
   },
   {
     id: "demo-consultation-003",
@@ -40,6 +43,7 @@ export const consultations: Consultation[] = [
     consultedAt: "2026-11-21T15:40:00",
     diagnosis: "Gastro-entérite",
     status: "brouillon",
+    verifiedContactMasked: "+216 •• ••• •05",
   },
   {
     id: "demo-consultation-004",
@@ -49,6 +53,7 @@ export const consultations: Consultation[] = [
     consultedAt: "2026-11-20T09:15:00",
     diagnosis: "Otite moyenne",
     status: "révoquée",
+    verifiedContactMasked: "+216 •• ••• •64",
   },
 ];
 
@@ -75,7 +80,7 @@ export const instructions: Instruction[] = [
       "Aggravation importante",
     ],
     version: 2,
-    approvedBy: "Dr. Amira Ben Salah",
+    approvedBy: DOCTOR.name,
     approvedAt: "2026-11-21T10:41:00",
     active: true,
   },
@@ -96,7 +101,7 @@ export const instructions: Instruction[] = [
     },
     escalation: ["Température ≥ 40 °C", "Enfant très abattu", "Fièvre > 48 h"],
     version: 1,
-    approvedBy: "Dr. Amira Ben Salah",
+    approvedBy: DOCTOR.name,
     approvedAt: "2026-11-21T10:41:00",
     active: true,
   },
@@ -116,7 +121,7 @@ export const instructions: Instruction[] = [
     },
     escalation: ["Refus de boire", "Signes de déshydratation"],
     version: 1,
-    approvedBy: "Dr. Amira Ben Salah",
+    approvedBy: DOCTOR.name,
     approvedAt: "2026-11-21T10:41:00",
     active: true,
   },
@@ -135,7 +140,7 @@ export const instructions: Instruction[] = [
     },
     escalation: ["Plusieurs prises oubliées"],
     version: 1,
-    approvedBy: "Dr. Amira Ben Salah",
+    approvedBy: DOCTOR.name,
     approvedAt: "2026-11-21T10:41:00",
     active: true,
   },
@@ -148,71 +153,68 @@ export const alertSigns = [
   "Altération majeure de l'état général",
 ];
 
+const seed = (
+  id: string,
+  patientCode: string,
+  consultationId: string,
+  timestamp: string,
+  message: string,
+  followUp?: InteractionEvent["followUp"],
+) =>
+  buildEvent(analyzeMessage(message, instructions, consultationId), {
+    id,
+    patientCode,
+    consultationId,
+    timestamp,
+    message,
+    ...(followUp ? { followUp } : {}),
+  });
+
 export const initialEvents: InteractionEvent[] = [
-  {
-    id: "EVT-1042",
-    patientCode: "DEMO-001",
-    timestamp: "2026-11-21T22:47:00",
-    language: "Arabizi",
-    message: "Weldi skhantou 41 w ta3eb barcha",
-    summary: "Température ≥ 40 °C chez l'enfant",
-    outcome: "urgence",
-    needsCallback: true,
-  },
-  {
-    id: "EVT-1041",
-    patientCode: "DEMO-001",
-    timestamp: "2026-11-21T21:12:00",
-    language: "Darja",
-    message: "ولدي مازال يشكي من حلقو، شنوة نعمل؟",
-    summary: "Douleur de gorge persistante",
-    outcome: "transmise",
-    instructionId: "INS-001-A",
-    instructionVersion: 2,
-    needsCallback: false,
-  },
-  {
-    id: "EVT-1040",
-    patientCode: "DEMO-002",
-    timestamp: "2026-11-21T20:30:00",
-    language: "Mixte",
-    message: "3andou fièvre 39.7 w ma y7ebbech yekel",
-    summary: "Fièvre 39.7 °C — avis médical",
-    outcome: "escalade",
-    needsCallback: true,
-  },
-  {
-    id: "EVT-1039",
-    patientCode: "DEMO-002",
-    timestamp: "2026-11-21T19:05:00",
-    language: "Français",
-    message: "Est-ce qu'il peut aller à l'école demain ?",
-    summary: "Situation non couverte",
-    outcome: "non_couverte",
-    needsCallback: true,
-  },
-  {
-    id: "EVT-1038",
-    patientCode: "DEMO-001",
-    timestamp: "2026-11-21T18:22:00",
-    language: "Arabizi",
-    message: "nsit eddwa mta3 sbe7, chna3mel?",
-    summary: "Oubli d'une prise du traitement",
-    outcome: "transmise",
-    instructionId: "INS-001-D",
-    instructionVersion: 1,
-    needsCallback: false,
-  },
-  {
-    id: "EVT-1037",
-    patientCode: "DEMO-004",
-    timestamp: "2026-11-21T14:10:00",
-    language: "Darja",
-    message: "بنتي ما عندهاش السخانة أما تبكي برشا",
-    summary: "Situation non couverte",
-    outcome: "non_couverte",
-    needsCallback: true,
-  },
+  seed(
+    "EVT-1042",
+    "DEMO-001",
+    DEMO_CONSULTATION_ID,
+    "2026-11-21T22:47:00",
+    "Weldi skhantou 41 w ta3eb barcha",
+  ),
+  seed(
+    "EVT-1041",
+    "DEMO-001",
+    DEMO_CONSULTATION_ID,
+    "2026-11-21T21:12:00",
+    "ولدي مازال يشكي من حلقو، شنوة نعمل؟",
+  ),
+  seed(
+    "EVT-1040",
+    "DEMO-002",
+    "demo-consultation-002",
+    "2026-11-21T20:30:00",
+    "3andou fièvre 39.7 w ma y7ebbech yekel",
+    "contact_tente",
+  ),
+  seed(
+    "EVT-1039",
+    "DEMO-002",
+    "demo-consultation-002",
+    "2026-11-21T19:05:00",
+    "Est-ce qu'il peut aller à l'école demain ?",
+  ),
+  seed(
+    "EVT-1038",
+    "DEMO-001",
+    DEMO_CONSULTATION_ID,
+    "2026-11-21T18:22:00",
+    "nsit eddwa mta3 sbe7, chna3mel?",
+  ),
+  seed(
+    "EVT-1037",
+    "DEMO-004",
+    "demo-consultation-004",
+    "2026-11-21T14:10:00",
+    "بنتي ما عندهاش السخانة أما تبكي برشا",
+    "recontacte",
+  ),
 ];
 
 export const weeklyActivity = [
@@ -223,13 +225,6 @@ export const weeklyActivity = [
   { day: "Ven", transmise: 14, non_couverte: 5, escalade: 1, urgence: 0 },
   { day: "Sam", transmise: 11, non_couverte: 3, escalade: 2, urgence: 2 },
   { day: "Dim", transmise: 6, non_couverte: 2, escalade: 1, urgence: 1 },
-];
-
-export const benchmark = [
-  { label: "Exactitude extraction (symptômes, °C, négation)", value: 94 },
-  { label: "Rappel des signes d'alerte (scénarios préparés)", value: 100 },
-  { label: "Réponses traçables à une consigne validée", value: 100 },
-  { label: "Refus appropriés si consigne absente", value: 96 },
 ];
 
 export const initialAudit: AuditLog[] = [

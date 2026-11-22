@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useCareStore } from "@/lib/care-store";
 import type { Outcome } from "@/lib/care-types";
 import { DEMO_CONSULTATION_ID } from "@/lib/demo-data";
+import { buildEvent } from "@/lib/events";
 import { analyzeMessage, type Analysis } from "@/lib/safety-engine";
 
 export const Route = createFileRoute("/_dashboard/simulateur")({
@@ -118,22 +119,15 @@ function SimulatorPage() {
           : {}),
       },
     ]);
-    addEvent({
-      id: `EVT-${Math.floor(Math.random() * 9000 + 1000)}`,
-      patientCode: "DEMO-001",
-      timestamp: new Date().toISOString(),
-      language: analysis.language,
-      message: clean,
-      summary: analysis.summary,
-      outcome: analysis.outcome,
-      ...(analysis.instruction
-        ? {
-            instructionId: analysis.instruction.id,
-            instructionVersion: analysis.instruction.version,
-          }
-        : {}),
-      needsCallback: analysis.outcome !== "transmise",
-    });
+    addEvent(
+      buildEvent(analysis, {
+        id: `EVT-${Math.floor(Math.random() * 9000 + 1000)}`,
+        patientCode: "DEMO-001",
+        consultationId: DEMO_CONSULTATION_ID,
+        timestamp: new Date().toISOString(),
+        message: clean,
+      }),
+    );
     addAudit(
       "Assistant 3awedhni",
       DEMO_CONSULTATION_ID,

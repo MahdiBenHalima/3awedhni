@@ -65,7 +65,7 @@ const WAVE = [
 ];
 
 function ConsultationsPage() {
-  const { consultations, instructions, updateInstruction, approveConsultation } = useCareStore();
+  const { consultations, instructions, proposeEdit, approveConsultation } = useCareStore();
   const [stage, setStage] = useState<Stage>("audio");
   const [playing, setPlaying] = useState(false);
   const [code, setCode] = useState<string | null>(null);
@@ -263,6 +263,11 @@ function ConsultationsPage() {
                         </h4>
                         <span className="text-xs font-semibold text-primary-deep">
                           {ins.id} · v{ins.version}
+                          {ins.pendingAction !== undefined && (
+                            <Badge variant="warning" className="ml-2">
+                              Brouillon v{ins.version + 1} à valider
+                            </Badge>
+                          )}
                         </span>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
@@ -272,11 +277,9 @@ function ConsultationsPage() {
                         Action autorisée
                       </label>
                       <Textarea
-                        value={ins.permittedAction}
+                        value={ins.pendingAction ?? ins.permittedAction}
                         disabled={stage === "validated"}
-                        onChange={(e) =>
-                          updateInstruction(ins.id, { permittedAction: e.target.value })
-                        }
+                        onChange={(e) => proposeEdit(ins.id, e.target.value)}
                         className="mt-1 min-h-[70px] rounded-xl"
                       />
                       <div className="mt-3 flex flex-wrap gap-1.5">

@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { Bell, LogOut, Search } from "lucide-react";
+import { Bell, LogOut, Search, UserRound } from "lucide-react";
 
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { CareStoreProvider, useCareStore } from "@/lib/care-store";
-import { DOCTOR } from "@/lib/demo-data";
+import { followUpQueue } from "@/lib/events";
 
 export const Route = createFileRoute("/_dashboard")({
   component: DashboardLayout,
@@ -34,7 +34,7 @@ function DashboardLayout() {
 function TopBar() {
   const navigate = useNavigate();
   const { events } = useCareStore();
-  const pending = events.filter((e) => e.needsCallback).length;
+  const pending = followUpQueue(events).length;
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-background/85 px-4 backdrop-blur sm:px-8">
@@ -51,7 +51,7 @@ function TopBar() {
           variant="ghost"
           size="icon"
           className="relative rounded-full"
-          aria-label="Rappels en attente"
+          aria-label="Suivis à examiner"
         >
           <Bell />
           {pending > 0 && (
@@ -62,13 +62,13 @@ function TopBar() {
         </Button>
         <div className="hidden items-center gap-2.5 rounded-full bg-card py-1 pl-1 pr-4 shadow-soft sm:flex">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-gradient-primary text-xs font-semibold text-primary-foreground">
-              {DOCTOR.initials}
+            <AvatarFallback className="bg-gradient-primary text-primary-foreground">
+              <UserRound className="h-4 w-4" />
             </AvatarFallback>
           </Avatar>
           <div className="leading-tight">
-            <div className="text-sm font-semibold text-ink">{DOCTOR.name}</div>
-            <div className="text-[0.7rem] text-muted-foreground">{DOCTOR.specialty}</div>
+            <div className="text-sm font-semibold text-ink">Espace médecin</div>
+            <div className="text-[0.7rem] text-muted-foreground">Compte médecin</div>
           </div>
         </div>
         <Button

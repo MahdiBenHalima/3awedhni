@@ -10,3 +10,8 @@ export function formatDateTime(iso: string) {
     minute: "2-digit",
   });
 }
+
+/** Physician names are never displayed; the identity stays in the protected audit data. */
+export function displayActor(actor: string) {
+  return /^Dr\.?\s/i.test(actor) ? "Médecin" : actor;
+}

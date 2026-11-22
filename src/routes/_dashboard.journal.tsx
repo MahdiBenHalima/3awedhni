@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCareStore } from "@/lib/care-store";
 import type { Outcome } from "@/lib/care-types";
-import { formatDateTime } from "@/lib/format";
+import { displayActor, formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_dashboard/journal")({
   head: () => ({
@@ -141,7 +141,8 @@ function JournalPage() {
                     </span>
                   </div>
                   <div className="mt-0.5 text-sm text-muted-foreground">
-                    {a.actor} · <span className="font-mono text-xs">{a.resource}</span>
+                    {displayActor(a.actor)} ·{" "}
+                    <span className="font-mono text-xs">{a.resource}</span>
                   </div>
                 </div>
               </li>

@@ -1,11 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { FileAudio, LayoutDashboard, MessagesSquare, ScrollText, ShieldCheck } from "lucide-react";
+import { FileAudio, LayoutDashboard, MessagesSquare, ScrollText } from "lucide-react";
 
 import { Logo, LogoMark } from "@/components/brand/Logo";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -57,17 +56,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-3">
-        {!collapsed && (
-          <div className="rounded-2xl bg-gradient-deep p-4 text-primary-foreground">
-            <ShieldCheck className="h-5 w-5" />
-            <p className="mt-2 text-sm font-semibold">Prototype de démonstration</p>
-            <p className="mt-1 text-xs opacity-85">
-              Données fictives. Ni diagnostic, ni prescription par l'IA.
-            </p>
-          </div>
-        )}
-      </SidebarFooter>
     </Sidebar>
   );
 }

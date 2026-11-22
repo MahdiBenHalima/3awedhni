@@ -21,6 +21,8 @@ export interface Instruction {
   approvedBy: string;
   approvedAt: string;
   active: boolean;
+  /** Edited text awaiting physician validation; never used by the assistant until approved. */
+  pendingAction?: string;
 }
 
 export type ConsultationStatus = "brouillon" | "validée" | "révoquée";
@@ -34,11 +36,16 @@ export interface Consultation {
   diagnosis: string;
   status: ConsultationStatus;
   secureCode?: string;
+  /** Verified contact channel, masked for display. */
+  verifiedContactMasked: string;
 }
+
+export type FollowUpStatus = "aucun" | "a_examiner" | "contact_tente" | "recontacte" | "termine";
 
 export interface InteractionEvent {
   id: string;
   patientCode: string;
+  consultationId: string;
   timestamp: string;
   language: PatientLanguage;
   message: string;
@@ -46,7 +53,12 @@ export interface InteractionEvent {
   outcome: Outcome;
   instructionId?: string;
   instructionVersion?: number;
-  needsCallback: boolean;
+  /** Exact reply sent to the patient. */
+  reply: string;
+  /** Interpretation steps of the safety engine. */
+  trace: string[];
+  safetyRule: string;
+  followUp: FollowUpStatus;
 }
 
 export interface AuditLog {

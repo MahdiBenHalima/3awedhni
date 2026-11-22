@@ -1,19 +1,24 @@
+import { useId } from "react";
+
 import { cn } from "@/lib/utils";
 
+/** Crescent moon mark of 3awedhni. */
 export function LogoMark({ className }: { className?: string }) {
+  const uid = useId().replace(/:/g, "");
   return (
-    <svg viewBox="0 0 48 44" className={cn("h-10 w-10 shrink-0", className)} aria-hidden="true">
+    <svg viewBox="0 0 48 48" className={cn("h-10 w-10 shrink-0", className)} aria-hidden="true">
       <defs>
-        <linearGradient id="awd-heart" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={`${uid}-g`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="var(--primary)" />
           <stop offset="100%" stopColor="var(--primary-deep)" />
         </linearGradient>
+        <mask id={`${uid}-m`}>
+          <rect width="48" height="48" fill="white" />
+          <circle cx="31" cy="17" r="15" fill="black" />
+        </mask>
       </defs>
-      <path
-        d="M24 42C10 32 2 24 2 14.5 2 7.6 7.4 2 14 2c4.2 0 7.6 2.1 10 5.4C26.4 4.1 29.8 2 34 2c6.6 0 12 5.6 12 12.5C46 24 38 32 24 42Z"
-        fill="url(#awd-heart)"
-      />
-      <path d="M21 12h6v6h6v6h-6v6h-6v-6h-6v-6h6z" fill="var(--primary-foreground)" />
+      <circle cx="22" cy="25" r="19" fill={`url(#${uid}-g)`} mask={`url(#${uid}-m)`} />
+      <circle cx="38" cy="33" r="2.6" fill="var(--primary)" />
     </svg>
   );
 }
@@ -30,7 +35,7 @@ export function Logo({ className, compact = false }: { className?: string; compa
               عوضني
             </span>
           </div>
-          <div className="mt-1 whitespace-nowrap text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <div className="mt-1 whitespace-nowrap text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             Continuité post-consultation
           </div>
         </div>

@@ -4,12 +4,10 @@ import {
   ArrowRight,
   CheckCheck,
   KeyRound,
-  Languages,
   Lock,
   Mail,
   ShieldCheck,
   Stethoscope,
-  ScrollText,
 } from "lucide-react";
 
 import { Logo } from "@/components/brand/Logo";
@@ -17,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { DOCTOR } from "@/lib/demo-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -45,7 +42,7 @@ const DEMO_OTP = "246810";
 function LoginPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState<"credentials" | "otp">("credentials");
-  const [email, setEmail] = useState(DOCTOR.email);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("demo-hackathon");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -70,19 +67,13 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+    <div className="flex min-h-screen flex-col bg-background">
+      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5">
         <Logo />
-        <div className="hidden items-center gap-3 sm:flex">
-          <span className="rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-deep">
-            Prototype · TECH4HEALTH
-          </span>
-          <span className="text-xs text-muted-foreground">Données 100 % fictives</span>
-        </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-        <section className="relative overflow-hidden rounded-[2rem] bg-gradient-hero p-6 shadow-card sm:p-10 lg:p-14">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 items-center px-4 pb-10 sm:px-6">
+        <section className="relative w-full overflow-hidden rounded-[2rem] bg-gradient-hero p-6 shadow-card sm:p-10 lg:p-14">
           {/* decorative shapes */}
           <div className="pointer-events-none absolute -left-24 bottom-[-6rem] h-72 w-72 rounded-full bg-primary/10" />
           <div className="pointer-events-none absolute right-[-4rem] top-[-4rem] h-80 w-80 rounded-full bg-card/50" />
@@ -108,6 +99,8 @@ function LoginPage() {
                         id="email"
                         type="email"
                         value={email}
+                        placeholder="Email professionnel"
+                        autoComplete="email"
                         onChange={(e) => setEmail(e.target.value)}
                         className="h-11 rounded-xl bg-card pl-10"
                       />
@@ -234,36 +227,6 @@ function LoginPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="mt-8 grid gap-4 sm:grid-cols-3">
-          {[
-            {
-              icon: Stethoscope,
-              title: "Médecin aux commandes",
-              text: "Aucune consigne publiée sans votre validation.",
-            },
-            {
-              icon: Languages,
-              title: "Darja d'abord",
-              text: "Arabe, Arabizi, français et mélanges compris.",
-            },
-            {
-              icon: ScrollText,
-              title: "Traçable",
-              text: "Chaque réponse cite sa consigne et sa version.",
-            },
-          ].map(({ icon: Icon, title, text }) => (
-            <div key={title} className="flex items-start gap-4 rounded-2xl bg-card p-5 shadow-soft">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                <Icon className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-semibold">{title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{text}</p>
-              </div>
-            </div>
-          ))}
         </section>
       </main>
     </div>
