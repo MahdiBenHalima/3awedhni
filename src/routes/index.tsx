@@ -107,10 +107,7 @@ function LoginPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">Mot de passe</Label>
-                      <span className="text-xs text-muted-foreground">Démo pré-remplie</span>
-                    </div>
+                    <Label htmlFor="password">Mot de passe</Label>
                     <div className="relative">
                       <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input

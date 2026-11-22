@@ -5,6 +5,7 @@ import { Logo, LogoMark } from "@/components/brand/Logo";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -56,6 +57,13 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      {!collapsed && (
+        <SidebarFooter className="px-4 pb-4">
+          <p className="text-[0.7rem] leading-snug text-muted-foreground">
+            Version de démonstration — données fictives
+          </p>
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 }

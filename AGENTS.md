@@ -34,5 +34,5 @@ use the editor.
 - Demo state (consultations, instructions, events, audit) lives in `src/lib/care-store.tsx` React context mounted in the `_dashboard` layout; no backend, so state resets on reload — swap the provider for real queries when a backend is added.
 - Patient replies are decided by the deterministic `src/lib/safety-engine.ts`: red flags first, then only active approved instructions of the authorised consultation; keep its tests in `safety-engine.test.ts` green when changing rules.
 - Interaction events are built only via `buildEvent` in `src/lib/events.ts` (stores exact reply, trace, safety rule, deferred follow-up status); the follow-up queue order lives there and is covered by `events.test.ts`.
-- The dashboard "Contrôles de sécurité" panel runs `src/lib/safety-checks.ts` live; checks needing a backend have no `run` and display "Non mesuré" — never hardcode result percentages.
+- `src/lib/safety-checks.ts` holds the safety scenarios (not shown on the dashboard, exercised by tests); checks needing a backend have no `run` and report "non_mesure" — never hardcode result percentages.
 - UI never renders physician names: use `displayActor` from `src/lib/format.ts`; `approvedBy`/audit actors keep the real identity in data.
